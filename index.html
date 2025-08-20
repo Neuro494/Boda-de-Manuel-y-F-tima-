@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invitación de Boda</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Georgia', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+      overflow: hidden;
+      color: white;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      padding: 2rem;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      max-width: 400px;
+      animation: fadeIn 2s ease-in-out;
+      backdrop-filter: blur(10px);
+    }
+
+    h1 { font-size: 2rem; color: #ff8fab; margin-bottom: 0.5rem; }
+    h2 { font-size: 1.3rem; color: #eee; margin-bottom: 1rem; }
+    .date { font-size: 1.5rem; font-weight: bold; color: #fff; margin: 1rem 0; }
+    #countdown { font-size: 1.2rem; margin: 10px 0; color: #fff; }
+    p { color: #ddd; margin-bottom: 1.5rem; }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      background: #ff8fab;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-decoration: none;
+      margin-top: 10px;
+    }
+
+    .btn:hover { background: #e91e63; }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes twinkle { from {opacity: 0.2;} to {opacity: 1;} }
+
+    .flower {
+      position: absolute;
+      top: -50px;
+      font-size: 24px;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <!-- Audio oculto -->
+  <audio id="music" loop>
+    <source src="bensound-romantic.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
+  </audio>
+
+  <!-- Invitación -->
+  <div class="card">
+    <h1>Manuel & Fátima</h1>
+    <h2>¡Nos casamos!</h2>
+    <div class="date">10 • 07 • 2026</div>
+    <div id="countdown"></div>
+    <p>Será un honor contar con tu presencia en este día tan especial ❤️</p>
+    <a href="https://wa.me/5210000000000?text=Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Manuel%20y%20Fátima" target="_blank" class="btn">
+      Confirmación de asistencia
+    </a>
+    <br>
+    <button onclick="document.getElementById('music').play()" class="btn">
+      🎶 Reproducir música
+    </button>
+  </div>
+
+  <script>
+    // Cronómetro
+    const weddingDate = new Date("2026-07-10T17:00:00");
+    const countdownEl = document.getElementById("countdown");
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = weddingDate - now;
+
+      if(diff <= 0){
+        countdownEl.innerHTML = "¡Hoy es el gran día! 🎉";
+        clearInterval(interval);
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      countdownEl.innerHTML = 
+        `Faltan ${days} días, ${hours} h, ${minutes} m, ${seconds} s`;
+    }
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+
+    // Estrellas
+    for(let i=0; i<60; i++){
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.width = star.style.height = Math.random() * 3 + "px";
+      star.style.top = Math.random() * 100 + "vh";
+      star.style.left = Math.random() * 100 + "vw";
+      star.style.animationDuration = (Math.random() * 2 + 1) + "s";
+      document.body.appendChild(star);
+    }
+
+    // Flores emoji cayendo
+    const flowers = ["🌸","🌺","🌷","💮"];
+    for(let i=0; i<20; i++){
+      const flower = document.createElement("div");
+      flower.className = "flower";
+      flower.innerText = flowers[Math.floor(Math.random()*flowers.length)];
+      flower.style.left = Math.random() * 100 + "vw";
+      flower.style.animationDuration = (Math.random() * 5 + 5) + "s";
+      flower.style.animationDelay = Math.random() * 5 + "s";
+      document.body.appendChild(flower);
+    }
+  </script>
+</body>
+</html>
